@@ -42,16 +42,22 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   };
 };
 
-// Creation of all the locations
-var dow = new Shop(15, "Downtown", 8, 43, 4.50);
-var cap = new Shop(14, "Capitol Hill", 4, 37, 2.00);
-var sou = new Shop(12, "South Lake Union", 9, 23, 6.33);
-var wed = new Shop(11, "Wedgwood", 2, 28, 1.25);
-var bal = new Shop(12, "Ballard", 8, 58, 3.75);
+// Arrays of input data
+var hours = [15, 14, 12, 11, 12];
+var locations = ["Downtown", "Capitol Hill", "South Lake Union", "Wedgwood", "Ballard"];
+var minCPHs = [8, 4, 9, 2, 8];
+var maxCPHs = [43, 37, 23, 28, 58];
+var avgDPCs = [4.50, 2.00, 6.33, 1.25, 3.75];
 
-// Printing of all locations' information
-console.log(dow.toString());
-console.log(cap.toString());
-console.log(sou.toString());
-console.log(wed.toString());
-console.log(bal.toString());
+// Holder array for new stores
+var allStores = [];
+
+// Creation of all the locations
+for(var shop = 0; shop < 5; shop++) {
+  allStores.push(new Shop(hours[shop], locations[shop], minCPHs[shop], maxCPHs[shop], avgDPCs[shop]));
+} 
+
+// Printing of all locations' information to the console
+for(shop in allStores) {
+  console.log(allStores[shop].toString());
+}
