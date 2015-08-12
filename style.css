@@ -1,0 +1,97 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Verdana, Arial, sans-serif;
+  background-color: #2D7F7F;
+  height: 100%;
+}
+
+header {
+  width: 100%;
+  position: relative;
+  color: whitesmoke;
+  padding: 5px;
+  text-align: center;
+}
+
+a {
+  color: #095656;
+  text-decoration: none;
+}
+
+a:hover {
+  color: black;
+}
+
+nav {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  background-color:#219121;
+  color: #4D794D;
+  margin-top: -2em;
+}
+
+nav a {
+  margin: 2em;
+  color: #2D7F7F;
+}
+
+nav li {
+  display: inline-block;
+  position: relative;
+  background-color: #7BBBBB;
+  border: solid 0.5em #499494;
+}
+
+nav li:hover {
+  background-color: black;
+}
+
+aside {
+  margin-right: 10%;
+  margin-left: 2em;
+  float: right;
+  width: 20%;
+  padding: 1em;
+  min-height: 10em;
+  background-color: #499492;
+  text-align: center;
+}
+
+footer {
+  position: relative;
+  clear: both;
+  margin: 30 auto 10 auto;
+  padding: 100 auto 10 auto;
+  background-color: #92DD92;
+}
+
+main {
+  margin-left: 10%;
+  padding: 2em;
+  width: 50%;
+  min-height: 10em;
+  display: block;
+  background-color:whitesmoke;
+  text-align: center;
+}
+
+article {
+  margin-top: 2em;
+  margin-left: 10%;
+  padding: 2em;
+  width: 50%;
+  display: block;
+  background-color: #7BBBBB;
+}
+
+time {
+  color: #235523;
+}
+
+#violin {
+  width: 100%;
+}
