@@ -45,10 +45,14 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
     return total;
   };
 
-  // This variable saves the first call of getDailyDonuts() for accuracy in 
-  // the hourly method
+  // Gets the average number of hourly donuts over the course of a full day
   this.getAverageHourlyDonuts = function() {
     return Math.round(this.getDailyDonuts() / this.hours);
+  };
+
+  // Simply returns the hourly sales array
+  this.getHourlySalesArray = function() {
+    return this.hourlySales;
   };
 
   // toString() override function with proper formatting
@@ -68,6 +72,10 @@ function DonutMaster() {
 
   this.addNewStore = function(hours, location, minCPH, maxCPH, avgDPC) {
     this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC));
+  };
+
+  this.getStores = function() {
+    return this.stores;
   };
 
   this.generateSpecificReport = function(storeIndex) {
@@ -99,4 +107,21 @@ for(var shop = 0; shop < locations.length; shop++) {
 // Let's print some strings
 for(var shop = 0; shop < dm.stores.length; shop++) {
   console.log(dm.stores[shop].toString());
+}
+
+// Inserting all of that information into the HTML table (this is awesome)
+var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard'];
+
+for(var loc = 0; loc < docIDs.length; loc++) {
+  var row = document.getElementById(docIDs[loc]);
+  for(var col = 0; col < 15; col++) {
+    if(dm.getStores()[loc].hours > col){
+      row.insertAdjacentHTML('beforeend', '<td>' + 
+        dm.getStores()[loc].getHourlySalesArray()[col] + '</td>');
+    }else{
+      row.insertAdjacentHTML('beforeend', '<td>closed</td>');
+    }
+  }
+  row.insertAdjacentHTML('beforeend', '<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
+    '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>');
 }
