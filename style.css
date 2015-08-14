@@ -4,7 +4,8 @@ html {
 
 body {
   font-family: Verdana, Arial, sans-serif;
-  background-color: #2D7F7F;
+  background-image: url(http://i.imgur.com/M2TaW3B.jpg);
+  background-size: 100%;
   height: 100%;
 }
 
@@ -85,7 +86,12 @@ article {
   padding: 2em;
   width: 50%;
   display: block;
-  background-color: #7BBBBB;
+  background-color: rgba(144, 144, 144, 0.5);
+}
+
+table {
+  margin-top: 2em;
+  background-color: rgba(144, 144, 144, 0.5);
 }
 
 time {
