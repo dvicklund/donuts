@@ -66,29 +66,41 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
 function DonutMaster() {
   this.stores = [];
   
+  // Adds an existing shop to the stores array
   this.addStore = function(store) {
     this.stores.push(store);
   };
 
+  // Adds a new shop to the stores array
   this.addNewStore = function(hours, location, minCPH, maxCPH, avgDPC) {
     this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC));
   };
 
+  // Returns the stores array
   this.getStores = function() {
     return this.stores;
   };
 
+  // Shows a report for the input store, specified by array index
   this.generateSpecificReport = function(storeIndex) {
     console.log(this.stores[storeIndex].getLocation(), this.stores[storeIndex].getDailyDonuts(),
       this.stores[storeIndex].getAverageHourlyDonuts());
   };
 
+  // Shows a full report for all stores (without labels)
   this.generateReport = function() {
     for(var store = 0; store < this.stores.length; store++) {
       console.log(this.stores[store].getLocation(), this.stores[store].getDailyDonuts(),
       this.stores[store].getAverageHourlyDonuts());
     }
   };
+
+  // Shows a readable report of every store
+  this.generateReadableReport = function() {
+    for(var store = 0; store < this.stores.length; store++) {
+      console.log(this.stores[store].toString());
+    }
+  }
 }
 
 // Arrays of input data
@@ -110,10 +122,18 @@ for(var shop = 0; shop < dm.stores.length; shop++) {
 }
 
 // Inserting all of that information into the HTML table (this is awesome)
+// 
+// Here we instantiate our array of HTML table row ids
 var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard'];
 
+// Now, we loop through all the rows
 for(var loc = 0; loc < docIDs.length; loc++) {
+  
+  // Holder variable for the current row's <tr>
   var row = document.getElementById(docIDs[loc]);
+
+  // Now, we run through and create every cell in the row, filling each with the
+  // appropriate information
   for(var col = 0; col < 15; col++) {
     if(dm.getStores()[loc].hours > col){
       row.insertAdjacentHTML('beforeend', '<td>' + 
@@ -122,6 +142,8 @@ for(var loc = 0; loc < docIDs.length; loc++) {
       row.insertAdjacentHTML('beforeend', '<td>closed</td>');
     }
   }
+
+  // And, finally, the average and total figures are inserted
   row.insertAdjacentHTML('beforeend', '<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
     '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>');
 }
