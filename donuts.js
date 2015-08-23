@@ -150,7 +150,9 @@ for(var loc = 0; loc < docIDs.length; loc++) {
     '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>');
 }
 
-// TODO comment
+// This hover function calculates the difference between average hourly donut
+// sales and actual (generated) donut sales and displays that info in a 
+// text box which is created on a per-cell basis
 $('td').hover(function() {
   var parentName = $(this).parent().children(':first-child').text();
   var dmShopInfo;
