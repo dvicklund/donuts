@@ -132,22 +132,21 @@ var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard'
 for(var loc = 0; loc < docIDs.length; loc++) {
   
   // Holder variable for the current row's <tr>
-  var row = document.getElementById(docIDs[loc]);
+  var $row = $('#' + docIDs[loc]);
 
-  // Now, we run through and create every cell in the row, filling each with the
+  // Run through and create every cell in the row, filling each with the
   // appropriate information
   for(var col = 0; col < 15; col++) {
-    if(dm.getStores()[loc].hours > col){
-      row.insertAdjacentHTML('beforeend', '<td>' + 
-        dm.getStores()[loc].getHourlySalesArray()[col] + '</td>');
+    if(dm.getStores()[loc].hours > col) {
+      $row.append('<td>' + dm.getStores()[loc].getHourlySalesArray()[col] + '</td');
     }else{
-      row.insertAdjacentHTML('beforeend', '<td>closed</td>');
+      $row.append('<td>closed</td>');
     }
   }
 
   // And, finally, the average and total figures are inserted
-  row.insertAdjacentHTML('beforeend', '<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
-    '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>');
+  $row.append('<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
+    '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>')
 }
 
 // This hover function calculates the difference between average hourly donut
