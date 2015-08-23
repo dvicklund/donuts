@@ -8,22 +8,18 @@
 function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   this.hours = hours;
   this.location = location;
-  this.minCPH = minCPH;
-  this.maxCPH = maxCPH;
-  this.avgDPC = avgDPC;
+  this.minCPH = minCPH;   // Minimum customers per hour
+  this.maxCPH = maxCPH;   // Maximum customers per hour
+  this.avgDPC = avgDPC;   // Average donuts per customer
+  
   this.hourlySales = [];
-
+  
   // Finds a random number of customers per hour between the minimum and maximum
   // for that location
   this.randCPH = function() {
     return Math.floor(Math.random()*(this.maxCPH - this.minCPH)) + this.minCPH;
   };
-
-  // Simply returns the location property
-  this.getLocation = function() {
-    return this.location;
-  };
-
+  
   // Generates random hourly donut sales based upon the average donuts per 
   // customer the randCPH() method (random customers per hour)
   this.generateHourlyDonuts = function() {
@@ -34,6 +30,11 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
 
   // Populating the hourlySales array
   this.generateHourlyDonuts();
+
+  // Simply returns the location property
+  this.getLocation = function() {
+    return this.location;
+  };
 
   // Returns the total donuts served per day by calculating and adding donuts
   // per hour the shop is open
@@ -73,8 +74,7 @@ function DonutMaster() {
 
   // Adds a new shop to the stores array
   this.addNewStore = function(hours, location, minCPH, maxCPH, avgDPC) {
-    this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC));
-  };
+    this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC))};
 
   // Returns the stores array
   this.getStores = function() {
@@ -126,6 +126,8 @@ for(var shop = 0; shop < dm.stores.length; shop++) {
 // Here we instantiate our array of HTML table row ids
 var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard'];
 
+
+
 // Now, we loop through all the rows
 for(var loc = 0; loc < docIDs.length; loc++) {
   
@@ -147,3 +149,32 @@ for(var loc = 0; loc < docIDs.length; loc++) {
   row.insertAdjacentHTML('beforeend', '<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
     '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>');
 }
+
+// TODO comment
+$('td').hover(function() {
+  var parentName = $(this).parent().children(':first-child').text();
+  var dmShopInfo;
+  var dmShop
+  for(var index = 0; index < dm.getStores().length; index++){
+    if(parentName == dm.getStores()[index].getLocation()) {
+      dmInfo = dm.getStores()[index].toString();
+      dmShop = dm.getStores()[index];
+    }
+  }
+  var shopAvg = dmShop.getAverageHourlyDonuts();
+  var thisHour = $(this).text();
+    if(thisHour > shopAvg) {
+      $('#donutTable').prepend("<caption class='tempCaption'>" + (thisHour - shopAvg) + " more than average</caption>");
+    }else if(thisHour < shopAvg) {
+      $('#donutTable').prepend("<caption class='tempCaption'>" + (shopAvg - thisHour) + " less than average</caption>");
+  }else{
+    $('#donutTable').prepend("<caption class='tempCaption'>Exactly average</caption>");
+  };
+  $('.tempCaption').css({
+    top: $(this).position().top - 25,
+    left: $(this).position().left + 10
+  })
+}, function() {
+  $('.tempCaption').remove();
+});
+

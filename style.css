@@ -7,6 +7,7 @@ body {
   background-image: url(http://i.imgur.com/GrdeSmd.jpg);
   background-position: center;
   height: 100%;
+  border-radius:50%;
 }
 
 header {
@@ -23,7 +24,7 @@ h1 {
 }
 
 a {
-  color: #095656;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -68,11 +69,11 @@ aside {
 }
 
 footer {
-  position: relative;
+  position: block;
   clear: both;
   margin: 30 auto 10 auto;
-  padding: 100 auto 10 auto;
-  background-color: #92DD92;
+  padding: 2em auto;
+  background-color: rgba(210, 105, 30, 0.7);
 }
 
 main {
@@ -92,14 +93,18 @@ article {
   width: 50%;
   display: block;
   background-color: rgba(257, 257, 257, 0.8);
+  border-radius: 100%;
 }
 
 table {
+  display: block;
   margin: 2em auto 0 auto;
   background-color: rgba(257, 257, 257, 0.8);
   text-align: center;
   border: 1em solid rgba(0, 0, 0, 0);
   border-collapse: collapse;
+  padding: auto;
+
 }
 
 table tr td {
@@ -108,8 +113,24 @@ table tr td {
   border-right: 0.1em solid black;
 }
 
+td:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+caption {
+  background-color: white;
+}
+
+.tempCaption {
+  position: absolute;
+}
+
 table tbody tr th {
   padding-top: 1em;
+}
+
+table > >* {
+  display: inline-block;
 }
 
 time {
