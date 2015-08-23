@@ -154,7 +154,13 @@ for(var loc = 0; loc < docIDs.length; loc++) {
 // sales and actual (generated) donut sales and displays that info in a 
 // text box which is created on a per-cell basis
 $('td').hover(function() {
+
+  // Start by capturing the name of the store's row in which
+  // the hovering is happening
   var parentName = $(this).parent().children(':first-child').text();
+
+  // Using that info, loop through the DonutMaster array of stores to find
+  // the corresponding shop and save its info
   var dmShopInfo;
   var dmShop
   for(var index = 0; index < dm.getStores().length; index++){
@@ -163,20 +169,30 @@ $('td').hover(function() {
       dmShop = dm.getStores()[index];
     }
   }
+
+  // Grabbing shop hourly average and current cell's data
   var shopAvg = dmShop.getAverageHourlyDonuts();
   var thisHour = $(this).text();
-    if(thisHour > shopAvg) {
-      $('#donutTable').prepend("<caption class='tempCaption'>" + (thisHour - shopAvg) + " more than average</caption>");
-    }else if(thisHour < shopAvg) {
-      $('#donutTable').prepend("<caption class='tempCaption'>" + (shopAvg - thisHour) + " less than average</caption>");
+  
+  // Checking current cell vs avg and creating appropriate caption element
+  if(thisHour > shopAvg) {
+    $('#donutTable').prepend("<caption class='tempCaption'>" + (thisHour - shopAvg) + " more than average</caption>");
+  }else if(thisHour < shopAvg) {
+    $('#donutTable').prepend("<caption class='tempCaption'>" + (shopAvg - thisHour) + " less than average</caption>");
+  }else if(thisHour == "closed") {
+    $('#donutTable').prepend("<caption class='tempCaption'>Closed for the day</caption>");
   }else{
     $('#donutTable').prepend("<caption class='tempCaption'>Exactly average</caption>");
   };
+
+  // Styling caption according to hover event
   $('.tempCaption').css({
     top: $(this).position().top - 25,
     left: $(this).position().left + 10
   })
 }, function() {
+  
+  // Remove the text box when the cursor moves out of the cell
   $('.tempCaption').remove();
 });
 

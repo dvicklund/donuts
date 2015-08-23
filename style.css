@@ -123,6 +123,7 @@ caption {
 
 .tempCaption {
   position: absolute;
+  padding: 0.2em;
 }
 
 table tbody tr th {
