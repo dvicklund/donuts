@@ -4,7 +4,7 @@ html {
 
 body {
   font-family: Verdana, Arial, sans-serif;
-  background-image: url(http://i.imgur.com/GrdeSmd.jpg);
+  background-image: url(http://i.imgur.com/AwgE3fY.jpg);
   background-position: center;
   height: 100%;
   border-radius:50%;
@@ -13,18 +13,21 @@ body {
 header {
   width: 100%;
   position: relative;
-  color: whitsmoke;
   padding: 5px;
   text-align: center;
 }
 
 h1 {
+  display: inline-block;
+  border-radius: 100%;
+  padding: 45px 10px;
   margin-left: 10%;
-  color: white;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 a {
-  color: #ffffff;
+  color: black;
   text-decoration: none;
 }
 
@@ -113,12 +116,17 @@ table tr td {
   border-right: 0.1em solid black;
 }
 
+th {
+  opacity: 0.6;
+}
+
 td:hover {
   background-color: rgba(255, 255, 255, 1);
 }
 
 caption {
   background-color: white;
+  z-index: 50;
 }
 
 .tempCaption {

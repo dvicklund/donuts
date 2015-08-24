@@ -6,14 +6,26 @@
 // 10 August 2015
 
 function Shop(hours, location, minCPH, maxCPH, avgDPC) {
-  this.hours = hours;
-  this.location = location;
+  this.hours = hours;     // 2-element Array of open and closing times in 24h whole ints
+  this.location = location; // Formatted location name
   this.minCPH = minCPH;   // Minimum customers per hour
   this.maxCPH = maxCPH;   // Maximum customers per hour
   this.avgDPC = avgDPC;   // Average donuts per customer
-  
   this.hourlySales = [];
   
+  this.getOpeningHour = function() {
+    return this.hours[0];
+  }
+
+  this.getClosingHour = function() {
+    return this.hours[1];
+  }
+
+  // Get number of hours open
+  this.getHoursOpen = function() {
+    return this.hours[1] - this.hours[0];
+  };
+
   // Finds a random number of customers per hour between the minimum and maximum
   // for that location
   this.randCPH = function() {
@@ -23,7 +35,7 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   // Generates random hourly donut sales based upon the average donuts per 
   // customer the randCPH() method (random customers per hour)
   this.generateHourlyDonuts = function() {
-    for(var hour = 0; hour < this.hours; hour++) {
+    for(var hour = 0; hour < this.getHoursOpen(); hour++) {
       this.hourlySales.push(Math.round(this.randCPH()*this.avgDPC));
     }
   };
@@ -40,7 +52,7 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   // per hour the shop is open
   this.getDailyDonuts = function() {
     var total = 0;
-    for (var hour = 0; hour < this.hours; hour++) {
+    for (var hour = 0; hour < this.getHoursOpen(); hour++) {
       total += this.hourlySales[hour];
     }
     return total;
@@ -48,7 +60,7 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
 
   // Gets the average number of hourly donuts over the course of a full day
   this.getAverageHourlyDonuts = function() {
-    return Math.round(this.getDailyDonuts() / this.hours);
+    return Math.round(this.getDailyDonuts() / this.getHoursOpen());
   };
 
   // Simply returns the hourly sales array
@@ -59,7 +71,7 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   // toString() override function with proper formatting
   this.toString = function() {
     return this.location + ": " + this.getDailyDonuts() + " sold daily!  That's about " + 
-    this.getAverageHourlyDonuts() + " donuts an hour for " + this.hours + " hours.";
+    this.getAverageHourlyDonuts() + " donuts an hour for " + this.getHoursOpen() + " hours.";
   };
 }
 
@@ -104,11 +116,16 @@ function DonutMaster() {
 }
 
 // Arrays of input data
-var hours = [15, 14, 12, 11, 12];
-var locations = ["Downtown", "Capitol Hill", "South Lake Union", "Wedgwood", "Ballard"];
-var minCPHs = [8, 4, 9, 2, 8];
-var maxCPHs = [43, 37, 23, 28, 58];
-var avgDPCs = [4.50, 2.00, 6.33, 1.25, 3.75];
+var hours = [[6, 19], [6, 21], [7, 18], [6, 18], [6, 18], [6, 17], [6, 17], [6, 18], [6, 18], [9, 21], [7, 18], [6, 18], [5, 18], [6, 20], [5, 19], [6, 18], [6, 19], [6, 20], [6, 12]];
+var locations = ['Downtown', 'Capitol Hill', 'South Lake Union', 'Wedgwood', 'Ballard', 'Queen Anne', 
+  'Bellevue', 'Bothell', 'Issaquah', 'Bellevue Square', 'Third and Colombia', 'Redmond', 'Renton', 
+  'First Hill', 'Western Avenue', 'Dallas, Texas', 'Juanita', 'West Seattle', 'Greenville'];
+var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard', 'queenAnne', 
+  'bellevue', 'bothell', 'issaquah', 'bellevueSquare', 'thirdAndColombia', 'redmond', 'renton', 
+  'firstHill', 'westernAve', 'dallasTexas', 'juanita', 'westSeattle', 'greenville'];
+var minCPHs = [8,    4,    9,    2,    8,    15,   3,    1,    1,    3,    7,    3,    3,    1,    9,    6,    12,   5,    4];
+var maxCPHs = [43,   37,   23,   28,   58,   30,   50,   28,   35,   40,   60,   37,   44,   30,   37,   68,   35,   41,   25];
+var avgDPCs = [4.50, 2.00, 6.33, 1.25, 3.75, 2.25, 3.15, 2.00, 2.50, 1.75, 2.25, 1.55, 4.00, 3.00, 1.26, 4.33, 2.19, 1.11, 4.42];
 
 // Creating and populating new DonutMaster object using the above arrays of information
 var dm = new DonutMaster();
@@ -122,13 +139,8 @@ for(var shop = 0; shop < dm.stores.length; shop++) {
 }
 
 // Inserting all of that information into the HTML table (this is awesome)
-// 
-// Here we instantiate our array of HTML table row ids
-var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard'];
-
-
-
-// Now, we loop through all the rows
+//  
+// Loop through all the rows
 for(var loc = 0; loc < docIDs.length; loc++) {
   
   // Holder variable for the current row's <tr>
@@ -136,9 +148,10 @@ for(var loc = 0; loc < docIDs.length; loc++) {
 
   // Run through and create every cell in the row, filling each with the
   // appropriate information
-  for(var col = 0; col < 15; col++) {
-    if(dm.getStores()[loc].hours > col) {
-      $row.append('<td>' + dm.getStores()[loc].getHourlySalesArray()[col] + '</td');
+  for(var col = 0; col < 16; col++) {
+    if(dm.getStores()[loc].getOpeningHour() - 5 <= col && dm.getStores()[loc].getClosingHour() - 5 > col) {
+      var openingDiff = dm.getStores()[loc].getOpeningHour() - 5;
+      $row.append('<td>' + dm.getStores()[loc].getHourlySalesArray()[col-openingDiff] + '</td');
     }else{
       $row.append('<td>closed</td>');
     }
@@ -184,14 +197,28 @@ $('td').hover(function() {
     $('#donutTable').prepend("<caption class='tempCaption'>Exactly average</caption>");
   };
 
-  // Styling caption according to hover event
+  // Positioning caption according to hover event
   $('.tempCaption').css({
     top: $(this).position().top - 25,
     left: $(this).position().left + 10
   })
-}, function() {
-  
-  // Remove the text box when the cursor moves out of the cell
-  $('.tempCaption').remove();
+
+  // Hide caption, then fade in
+  $('.tempCaption').hide().fadeIn(300);
+}, 
+  function() {
+    // Remove the text box when the cursor moves out of the cell
+    $('.tempCaption').remove();
 });
 
+
+$('th').hover(function() {
+var headingName = $(this).attr('id');
+  $(this).animate({
+    opacity: 1.0
+    }, 400, function() {});
+}, function() {
+  $(this).animate({
+    opacity: '-=0.4'
+    }, 400, function(){});
+});
