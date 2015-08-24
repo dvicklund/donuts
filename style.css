@@ -23,7 +23,7 @@ h1 {
   padding: 45px 10px;
   margin-left: 10%;
   color: black;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(230, 230, 255, 0.7);
 }
 
 a {
@@ -76,7 +76,7 @@ footer {
   clear: both;
   margin: 30 auto 10 auto;
   padding: 2em auto;
-  background-color: rgba(210, 105, 30, 0.7);
+  background-color: rgba(210, 210, 255, 0.7);
 }
 
 main {
@@ -95,14 +95,14 @@ article {
   padding: 2em;
   width: 50%;
   display: block;
-  background-color: rgba(257, 257, 257, 0.8);
+  background-color: rgba(230, 230, 255, 0.7);
   border-radius: 100%;
 }
 
 table {
   display: block;
   margin: 2em auto 0 auto;
-  background-color: rgba(257, 257, 257, 0.8);
+  background-color: rgba(230, 230, 255, 0.7);
   text-align: center;
   border: 1em solid rgba(0, 0, 0, 0);
   border-collapse: collapse;
