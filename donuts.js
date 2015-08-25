@@ -68,6 +68,11 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
     return this.hourlySales;
   };
 
+  // Returns HTMLString of this.shop
+  this.toHTML = function() {
+    return 
+  }
+
   // toString() override function with proper formatting
   this.toString = function() {
     return this.location + ": " + this.getDailyDonuts() + " sold daily!  That's about " + 
@@ -116,6 +121,7 @@ function DonutMaster() {
 }
 
 // Arrays of input data
+var hourWeights = [0.6, 0.7, 1.0, 1.0, 1.0, 0.6, 0.5, 0.3, 0.2, 0.1, 0.1, 0.2, 0.1, 0.2, 0.3  ]
 var hours = [[6, 19], [6, 21], [7, 18], [6, 18], [6, 18], [6, 17], [6, 17], [6, 18], [6, 18], [9, 21], [7, 18], [6, 18], [5, 18], [6, 20], [5, 19], [6, 18], [6, 19], [6, 20], [6, 12]];
 var locations = ['Downtown', 'Capitol Hill', 'South Lake Union', 'Wedgwood', 'Ballard', 'Queen Anne', 
   'Bellevue', 'Bothell', 'Issaquah', 'Bellevue Square', 'Third and Colombia', 'Redmond', 'Renton', 
@@ -173,11 +179,9 @@ $('td').hover(function() {
 
   // Using that info, loop through the DonutMaster array of stores to find
   // the corresponding shop and save its info
-  var dmShopInfo;
   var dmShop
   for(var index = 0; index < dm.getStores().length; index++){
     if(parentName == dm.getStores()[index].getLocation()) {
-      dmInfo = dm.getStores()[index].toString();
       dmShop = dm.getStores()[index];
     }
   }
@@ -211,6 +215,16 @@ $('td').hover(function() {
     $('.tempCaption').remove();
 });
 
+// $('table').hover(function() {
+//   var headingName = $(this).target.attr('id');
+//   $(this).targetElement().animate({
+//     opacity: 1.0
+//   }, 400, function() {});
+// }, function() {
+//   $(this).target.animate({
+//     opacity: '-=0.4'
+//   }, 400, function(){});
+// })
 
 $('th').hover(function() {
 var headingName = $(this).attr('id');
