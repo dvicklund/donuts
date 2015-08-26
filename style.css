@@ -127,6 +127,7 @@ td:hover {
 
 caption {
   background-color: white;
+  border-radius: 5px;
   z-index: 50;
 }
 

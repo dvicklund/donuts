@@ -5,6 +5,23 @@
 // David Vicklund
 // 10 August 2015
 
+
+// Arrays of input data
+var hourWeights = [1.0, 1.2, 1.5, 2.0, 2.5, 1.8, 1.0, 1.0, 0.8, 0.7, 0.6, 0.4, 0.3, 0.2, 0.2, 0.1];
+var hours = [[6, 19], [6, 21], [7, 18], [6, 18], [6, 18], [6, 17], [6, 17], [6, 18], [6, 18], 
+  [9, 21], [7, 18], [6, 18], [5, 18], [6, 20], [5, 19], [6, 18], [6, 19], [6, 20], [6, 15]];
+var locations = ['Downtown', 'Capitol Hill', 'South Lake Union', 'Wedgwood', 'Ballard', 'Queen Anne', 
+  'Bellevue', 'Bothell', 'Issaquah', 'Bellevue Square', 'Third and Colombia', 'Redmond', 'Renton', 
+  'First Hill', 'Western Avenue', 'Dallas, Texas', 'Juanita', 'West Seattle', 'Greenville'];
+var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard', 'queenAnne', 
+  'bellevue', 'bothell', 'issaquah', 'bellevueSquare', 'thirdAndColombia', 'redmond', 'renton', 
+  'firstHill', 'westernAve', 'dallasTexas', 'juanita', 'westSeattle', 'greenville'];
+var minCPHs = [8,    4,    9,    3,    8,    15,   3,    1,    1,    3,    7,    3,    3,    1,    9,    6,    12,   5,    4];
+var maxCPHs = [43,   37,   23,   28,   58,   30,   50,   28,   35,   40,   60,   37,   44,   30,   37,   68,   35,   41,   25];
+var avgDPCs = [4.50, 2.00, 6.33, 1.75, 3.75, 2.25, 3.15, 2.00, 2.50, 1.75, 2.25, 1.55, 4.00, 3.00, 1.26, 4.33, 2.19, 1.11, 4.42];
+
+
+// Shop object
 function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   this.hours = hours;     // 2-element Array of open and closing times in 24h whole ints
   this.location = location; // Formatted location name
@@ -36,7 +53,7 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   // customer the randCPH() method (random customers per hour)
   this.generateHourlyDonuts = function() {
     for(var hour = 0; hour < this.getHoursOpen(); hour++) {
-      this.hourlySales.push(Math.round(this.randCPH()*this.avgDPC));
+      this.hourlySales.push(Math.round(this.randCPH()*this.avgDPC*hourWeights[hour]));
     }
   };
 
@@ -120,19 +137,6 @@ function DonutMaster() {
   }
 }
 
-// Arrays of input data
-var hourWeights = [0.6, 0.7, 1.0, 1.0, 1.0, 0.6, 0.5, 0.3, 0.2, 0.1, 0.1, 0.2, 0.1, 0.2, 0.3  ]
-var hours = [[6, 19], [6, 21], [7, 18], [6, 18], [6, 18], [6, 17], [6, 17], [6, 18], [6, 18], [9, 21], [7, 18], [6, 18], [5, 18], [6, 20], [5, 19], [6, 18], [6, 19], [6, 20], [6, 12]];
-var locations = ['Downtown', 'Capitol Hill', 'South Lake Union', 'Wedgwood', 'Ballard', 'Queen Anne', 
-  'Bellevue', 'Bothell', 'Issaquah', 'Bellevue Square', 'Third and Colombia', 'Redmond', 'Renton', 
-  'First Hill', 'Western Avenue', 'Dallas, Texas', 'Juanita', 'West Seattle', 'Greenville'];
-var docIDs = ['downtown', 'capitolHill', 'southLakeUnion', 'wedgwood', 'ballard', 'queenAnne', 
-  'bellevue', 'bothell', 'issaquah', 'bellevueSquare', 'thirdAndColombia', 'redmond', 'renton', 
-  'firstHill', 'westernAve', 'dallasTexas', 'juanita', 'westSeattle', 'greenville'];
-var minCPHs = [8,    4,    9,    2,    8,    15,   3,    1,    1,    3,    7,    3,    3,    1,    9,    6,    12,   5,    4];
-var maxCPHs = [43,   37,   23,   28,   58,   30,   50,   28,   35,   40,   60,   37,   44,   30,   37,   68,   35,   41,   25];
-var avgDPCs = [4.50, 2.00, 6.33, 1.25, 3.75, 2.25, 3.15, 2.00, 2.50, 1.75, 2.25, 1.55, 4.00, 3.00, 1.26, 4.33, 2.19, 1.11, 4.42];
-
 // Creating and populating new DonutMaster object using the above arrays of information
 var dm = new DonutMaster();
 for(var shop = 0; shop < locations.length; shop++) {
@@ -209,8 +213,7 @@ $('td').hover(function() {
 
   // Hide caption, then fade in
   $('.tempCaption').hide().fadeIn(300);
-}, 
-  function() {
+}, function() {
     // Remove the text box when the cursor moves out of the cell
     $('.tempCaption').remove();
 });
