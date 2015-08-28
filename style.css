@@ -1,6 +1,6 @@
 body {
   font-family: Verdana, Arial, sans-serif;
-  background-image: url(http://i.imgur.com/AwgE3fY.jpg);
+  background-image: url(./donutsStatic.jpg);
   background-position: center;
   height: 100%;
   border-radius:50%;
@@ -47,6 +47,22 @@ article {
   display: block;
   background-color: rgba(230, 255, 230, 0.7);
   border-radius: 15px;
+}
+
+fieldset {
+  margin: 2em 35%;
+  padding: 2em;
+  background-color: rgba(255, 230, 230, 0.7);
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  float: left;
+}
+
+input {
+  display: block;
 }
 
 table {

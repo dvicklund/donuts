@@ -22,7 +22,8 @@ var avgDPCs = [4.50, 2.00, 6.33, 1.75, 3.75, 2.25, 3.15, 2.00, 2.50, 1.75, 2.25,
 
 
 // Shop object
-function Shop(hours, location, minCPH, maxCPH, avgDPC) {
+function Shop(hours, location, minCPH, maxCPH, avgDPC, address) {
+  this.address = address;
   this.hours = hours;     // 2-element Array of open and closing times in 24h whole ints
   this.location = location; // Formatted location name
   this.minCPH = minCPH;   // Minimum customers per hour
@@ -30,6 +31,10 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
   this.avgDPC = avgDPC;   // Average donuts per customer
   this.hourlySales = [];
   
+  this.getAddress = function() {
+    return this.address;
+  }
+
   this.getOpeningHour = function() {
     return this.hours[0];
   }
@@ -85,11 +90,6 @@ function Shop(hours, location, minCPH, maxCPH, avgDPC) {
     return this.hourlySales;
   };
 
-  // Returns HTMLString of this.shop
-  this.toHTML = function() {
-    return 
-  }
-
   // toString() override function with proper formatting
   this.toString = function() {
     return this.location + ": " + this.getDailyDonuts() + " sold daily!  That's about " + 
@@ -107,8 +107,9 @@ function DonutMaster() {
   };
 
   // Adds a new shop to the stores array
-  this.addNewStore = function(hours, location, minCPH, maxCPH, avgDPC) {
-    this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC))};
+  this.addNewStore = function(hours, location, minCPH, maxCPH, avgDPC, address) {
+    this.stores.push(new Shop(hours, location, minCPH, maxCPH, avgDPC, address));
+  };
 
   // Returns the stores array
   this.getStores = function() {
@@ -135,12 +136,99 @@ function DonutMaster() {
       console.log(this.stores[store].toString());
     }
   }
+
+  // Prints this donutMaster object to the webpage table
+  this.toHTML = function() {
+    // Inserting all of that information into the HTML table (this is awesome)
+    //  
+    // Loop through all the rows
+    for(var loc = 0; loc < docIDs.length; loc++) {
+      
+      // Holder variable for the current row's <tr>
+      var $row = $('#' + docIDs[loc]);
+
+      var openingDiff = this.getStores()[loc].getOpeningHour() - 5;
+
+      // Run through and create every cell in the row, filling each with the
+      // appropriate information
+      for(var col = 0; col < 16; col++) {
+        if(this.getStores()[loc].getOpeningHour() - 5 <= col && this.getStores()[loc].getClosingHour() - 5 > col) {
+          $row.append('<td>' + this.getStores()[loc].getHourlySalesArray()[col-openingDiff] + '</td');
+        }else{
+          $row.append('<td>closed</td>');
+        }
+      }
+
+      // And, finally, the average and total figures are inserted
+      $row.append('<td>' + this.getStores()[loc].getAverageHourlyDonuts() + 
+        '</td><td>' + this.getStores()[loc].getDailyDonuts() + '</td>')
+    }
+  }
+
+  // Appends newest item in the stores array to the table in the page
+  this.appendToHTML = function() {
+    var lastStoreIndex = docIDs.length - 1;
+    var thisStore = this.stores[lastStoreIndex];
+    $('tbody').append('<tr id="' + docIDs[lastStoreIndex] + '"><th><a href="https://maps.google.com?q=' + 
+      thisStore.getAddress() + '">' + thisStore.getLocation() + '</a></th></tr>'
+    );
+    
+    var $row = $('#' + docIDs[lastStoreIndex]);
+    for(var col = 0; col < 16; col++) {
+      if(thisStore.getOpeningHour() - 5 <= col && thisStore.getClosingHour() - 5 > col) {
+        var openingDiff = thisStore.getOpeningHour() - 5;
+        $row.append('<td>' + thisStore.getHourlySalesArray()[col - openingDiff] + '</td>');
+      }else{
+        $row.append('<td>closed</td>');
+      }
+    }
+
+    $row.append('<td>' + thisStore.getAverageHourlyDonuts() + 
+        '</td><td>' + thisStore.getDailyDonuts() + '</td>');
+  }
 }
+
+
+// This section contains various formatting methods for adding and printing new stores to the page
+var capitalize = function(string) {
+  var firstLetter = string.charAt(0).toUpperCase();
+  var restOfString = string.substr(1).toLowerCase();
+  return firstLetter + restOfString;
+}
+
+var capitalizeAll = function(string) {
+  var stringArray = string.split(" ");
+  for(var n in stringArray) {
+    stringArray[n] = capitalize(stringArray[n]);
+  }
+  finishedString = stringArray.join(' ');
+  return finishedString;
+}
+
+var toIDFormat = function(stringInput) {
+  var locNameArray = stringInput.split(" ");
+  for(var n in locNameArray){
+    if(n == 0) {
+      locNameArray[n] = locNameArray[n].toLowerCase();
+    }else{
+      locNameArray[n] = capitalize(locNameArray[n]);
+    }
+  }
+  newID = locNameArray.join('');
+  return newID;
+}
+
+var formatAddress = function(addr) {
+  addrArray = addr.split(" ");
+  addrFormatted = addrArray.join("+");
+  return addrFormatted;
+}
+// --END of formatting methods-- //
 
 // Creating and populating new DonutMaster object using the above arrays of information
 var dm = new DonutMaster();
 for(var shop = 0; shop < locations.length; shop++) {
-  dm.addNewStore(hours[shop], locations[shop], minCPHs[shop], maxCPHs[shop], avgDPCs[shop]);
+  dm.addNewStore(hours[shop], locations[shop], minCPHs[shop], maxCPHs[shop], avgDPCs[shop], "");
 }
 
 // Let's print some strings
@@ -148,29 +236,8 @@ for(var shop = 0; shop < dm.stores.length; shop++) {
   console.log(dm.stores[shop].toString());
 }
 
-// Inserting all of that information into the HTML table (this is awesome)
-//  
-// Loop through all the rows
-for(var loc = 0; loc < docIDs.length; loc++) {
-  
-  // Holder variable for the current row's <tr>
-  var $row = $('#' + docIDs[loc]);
-
-  // Run through and create every cell in the row, filling each with the
-  // appropriate information
-  for(var col = 0; col < 16; col++) {
-    if(dm.getStores()[loc].getOpeningHour() - 5 <= col && dm.getStores()[loc].getClosingHour() - 5 > col) {
-      var openingDiff = dm.getStores()[loc].getOpeningHour() - 5;
-      $row.append('<td>' + dm.getStores()[loc].getHourlySalesArray()[col-openingDiff] + '</td');
-    }else{
-      $row.append('<td>closed</td>');
-    }
-  }
-
-  // And, finally, the average and total figures are inserted
-  $row.append('<td>' + dm.getStores()[loc].getAverageHourlyDonuts() + 
-    '</td><td>' + dm.getStores()[loc].getDailyDonuts() + '</td>')
-}
+// Prints to the page
+dm.toHTML();
 
 // This hover function calculates the difference between average hourly donut
 // sales and actual (generated) donut sales and displays that info in a 
@@ -229,6 +296,7 @@ $('td').hover(function() {
 //   }, 400, function(){});
 // })
 
+// Adds hover event opacity transition animation
 $('th').hover(function() {
 var headingName = $(this).attr('id');
   $(this).animate({
@@ -238,4 +306,22 @@ var headingName = $(this).attr('id');
   $(this).animate({
     opacity: '-=0.4'
     }, 400, function(){});
+});
+
+// Takes form input and appends it to the page
+$('#submitNew').click(function(event) {
+  var newID, newLocation, newAddress, newOpenHour, newCloseHour, newMinCPH, newMaxCPH, newAvgDPC, newHoursArray;
+  newID = toIDFormat($('#locationNew').val());
+  newLocation = capitalizeAll($('#locationNew').val());
+  newAddress = formatAddress($('#addressNew').val());
+  newOpenHour = $('#hourOpenNew').val();
+  newCloseHour = $('#hourCloseNew').val();
+  newMinCPH = $('#minCPHNew').val();
+  newMaxCPH = $('#maxCPHNew').val();
+  newAvgDPC = $('#avgDPCNew').val();
+  newHoursArray = [newOpenHour, newCloseHour];
+
+  dm.addNewStore(newHoursArray, newLocation, newMinCPH, newMaxCPH, newAvgDPC, newAddress);
+  docIDs.push(newID);
+  dm.appendToHTML();
 });

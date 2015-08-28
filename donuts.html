@@ -2,7 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="./style.css">
-    <<script src="jQuery.js"></script>
+    <script src="jQuery.js"></script>
     <title>Donuts</title>
   </head>
   <body>
@@ -99,7 +99,26 @@
         </tr>
       </tbody>
     </table>
-     
-     <footer>This site was hand-crafted by <a href="vicklund.com">David Vicklund</a></footer>
+    <form id="addNew" action="">
+      <fieldset>
+        <legend>Add a New Store</legend>
+        <label for="locationNew">Location Name</label>
+        <input id="locationNew" type="text" name="locationNew" value="Location Name">
+        <label for="addressNew">Address</label>
+        <input id="addressNew" type="text" name="addressNew" value="Full Street Address">
+        <label for="hourOpenNew">Opening Hour</label>
+        <input id="hourOpenNew" type="number" min="0" max="24" name="hourOpenNew" value="24">
+        <label for="hourCloseNew">Closing Hour</label>
+        <input id="hourCloseNew" type="number" min="0" max="24" name="hourCloseNew" value="24">
+        <label for="minCPHNew">Minimum Customers per Hour</label>
+        <input id="minCPHNew" type="number" min="0" max="999" name="minCPHNew" value="0">
+        <label for="maxCPHNew">Maximum Customers per Hour</label>
+        <input id="maxCPHNew" type="number" min="1" max="999" name="maxCPHNew" value="999">
+        <label for="avgDPCNew">Average Donuts Per Customer</label>
+        <input id="avgDPCNew" type="number" min="0" max="99" name="avgDPCNew" value="1.00">
+        <input id="submitNew" form="addNew" type="button" name="submitNew" value="Add New">
+      </fieldset>
+    </form> 
+    <footer>This site was hand-crafted by <a href="vicklund.com">David Vicklund</a></footer>
   </body>
 </html>
